@@ -1,0 +1,17 @@
+[plugin]
+name = "fledge-deploy"
+version = "0.1.0"
+description = "Deploy, rollback, and post-flow notification for fledge workflows"
+author = "CorvidLabs"
+
+[[commands]]
+name = "deploy"
+binary = "bin/fledge-deploy"
+
+[[commands]]
+name = "rollback"
+binary = "bin/fledge-rollback"
+
+[[hooks]]
+event = "flow:post"
+binary = "hooks/flow-post"

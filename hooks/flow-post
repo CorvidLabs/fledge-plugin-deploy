@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# flow:post hook — runs after every fledge flow completes
+# fledge injects these env vars:
+#   FLEDGE_FLOW_NAME   — name of the flow that just ran
+#   FLEDGE_FLOW_STATUS — "success" | "failure" | "skipped"
+#   FLEDGE_FLOW_RUN_ID — unique run identifier
+
+set -euo pipefail
+
+FLOW_NAME="${FLEDGE_FLOW_NAME:-unknown}"
+FLOW_STATUS="${FLEDGE_FLOW_STATUS:-unknown}"
+RUN_ID="${FLEDGE_FLOW_RUN_ID:-}"
+
+icon() {
+  case "$1" in
+    success) echo "✓" ;;
+    failure) echo "✗" ;;
+    skipped) echo "↷" ;;
+    *)       echo "?" ;;
+  esac
+}
+
+echo ""
+echo "  [fledge-deploy] flow:post — $(icon "$FLOW_STATUS") $FLOW_NAME [$FLOW_STATUS]${RUN_ID:+ (run: $RUN_ID)}"
+echo ""
+
+# Exit non-zero on failure so fledge can surface hook errors
+[[ "$FLOW_STATUS" == "failure" ]] && exit 1 || exit 0

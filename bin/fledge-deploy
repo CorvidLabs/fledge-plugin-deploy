@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+# fledge-deploy — simulate a production deployment
+set -euo pipefail
+
+DEPLOY_ENV="${DEPLOY_ENV:-staging}"
+DEPLOY_VERSION="${DEPLOY_VERSION:-}"
+DRY_RUN="${DRY_RUN:-false}"
+
+usage() {
+  echo "Usage: fledge deploy [--env <environment>] [--version <tag>] [--dry-run]"
+  echo ""
+  echo "Environment variables:"
+  echo "  DEPLOY_ENV      Target environment (default: staging)"
+  echo "  DEPLOY_VERSION  Version/tag to deploy (required in production)"
+  echo "  DRY_RUN         Print steps without executing (default: false)"
+  exit 1
+}
+
+log() { echo "  [deploy] $*"; }
+warn() { echo "  [deploy] WARNING: $*" >&2; }
+die() { echo "  [deploy] ERROR: $*" >&2; exit 1; }
+
+# Parse args
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --env) DEPLOY_ENV="$2"; shift 2 ;;
+    --version) DEPLOY_VERSION="$2"; shift 2 ;;
+    --dry-run) DRY_RUN="true"; shift ;;
+    --help|-h) usage ;;
+    *) die "Unknown argument: $1" ;;
+  esac
+done
+
+# Validate
+[[ "$DEPLOY_ENV" == "production" && -z "$DEPLOY_VERSION" ]] && \
+  die "DEPLOY_VERSION is required when deploying to production"
+
+echo ""
+echo "╔══════════════════════════════════════╗"
+echo "║        fledge-deploy v0.1.0          ║"
+echo "╚══════════════════════════════════════╝"
+echo ""
+echo "  Environment : $DEPLOY_ENV"
+echo "  Version     : ${DEPLOY_VERSION:-latest}"
+echo "  Dry run     : $DRY_RUN"
+echo ""
+
+step() {
+  local n="$1" msg="$2"
+  echo "  [$n/4] $msg..."
+  if [[ "$DRY_RUN" == "false" ]]; then
+    sleep 0.3
+  fi
+}
+
+step 1 "Preflight checks"
+log "Checking environment variables"
+[[ -z "${CI:-}" ]] && warn "CI variable not set — running outside CI"
+log "Preflight passed"
+
+step 2 "Building artifact"
+log "Version: ${DEPLOY_VERSION:-latest}"
+log "Build complete"
+
+step 3 "Pushing to $DEPLOY_ENV"
+log "Upload simulated successfully"
+
+step 4 "Health check"
+log "Service responding on /health"
+
+echo ""
+echo "  ✓ Deployment to '$DEPLOY_ENV' complete"
+echo ""

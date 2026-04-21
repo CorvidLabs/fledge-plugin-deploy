@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# fledge-rollback — roll back the last deployment
+set -euo pipefail
+
+DEPLOY_ENV="${DEPLOY_ENV:-staging}"
+CONFIRM="${CONFIRM:-false}"
+
+usage() {
+  echo "Usage: fledge rollback [--env <environment>] [--yes]"
+  echo ""
+  echo "Options:"
+  echo "  --env   Target environment (default: staging)"
+  echo "  --yes   Skip confirmation prompt"
+  exit 1
+}
+
+log() { echo "  [rollback] $*"; }
+die() { echo "  [rollback] ERROR: $*" >&2; exit 1; }
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --env) DEPLOY_ENV="$2"; shift 2 ;;
+    --yes) CONFIRM="true"; shift ;;
+    --help|-h) usage ;;
+    *) die "Unknown argument: $1" ;;
+  esac
+done
+
+echo ""
+echo "╔══════════════════════════════════════╗"
+echo "║       fledge-rollback v0.1.0         ║"
+echo "╚══════════════════════════════════════╝"
+echo ""
+echo "  Environment : $DEPLOY_ENV"
+echo ""
+
+if [[ "$CONFIRM" == "false" && -t 0 ]]; then
+  read -r -p "  Roll back '$DEPLOY_ENV'? This cannot be undone. [y/N] " answer
+  [[ "$answer" =~ ^[Yy]$ ]] || { echo "  Aborted."; exit 0; }
+fi
+
+log "Identifying previous stable version"
+log "Previous version: v0.0.9 (simulated)"
+
+log "Initiating rollback..."
+sleep 0.3
+log "Restored previous artifact"
+
+log "Health check..."
+sleep 0.3
+log "Service responding on /health"
+
+echo ""
+echo "  ✓ Rollback of '$DEPLOY_ENV' complete"
+echo ""
