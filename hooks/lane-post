@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# lane:post hook — runs after every fledge lane completes
+# fledge injects these env vars:
+#   FLEDGE_LANE_NAME   — name of the lane that just ran
+#   FLEDGE_LANE_STATUS — "success" | "failure" | "skipped"
+#   FLEDGE_LANE_RUN_ID — unique run identifier
+
+set -euo pipefail
+
+LANE_NAME="${FLEDGE_LANE_NAME:-unknown}"
+LANE_STATUS="${FLEDGE_LANE_STATUS:-unknown}"
+RUN_ID="${FLEDGE_LANE_RUN_ID:-}"
+
+icon() {
+  case "$1" in
+    success) echo "✓" ;;
+    failure) echo "✗" ;;
+    skipped) echo "↷" ;;
+    *)       echo "?" ;;
+  esac
+}
+
+echo ""
+echo "  [fledge-deploy] lane:post — $(icon "$LANE_STATUS") $LANE_NAME [$LANE_STATUS]${RUN_ID:+ (run: $RUN_ID)}"
+echo ""
+
+# Exit non-zero on failure so fledge can surface hook errors
+[[ "$LANE_STATUS" == "failure" ]] && exit 1 || exit 0

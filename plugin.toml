@@ -1,7 +1,7 @@
 [plugin]
 name = "fledge-deploy"
 version = "0.1.0"
-description = "Deploy, rollback, and post-flow notification for fledge workflows"
+description = "Deploy, rollback, and post-lane notification for fledge workflows"
 author = "CorvidLabs"
 
 [[commands]]

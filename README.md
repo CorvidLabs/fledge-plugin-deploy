@@ -1,6 +1,6 @@
 # fledge-deploy
 
-An example [fledge](https://github.com/CorvidLabs/fledge) plugin demonstrating deploy, rollback, and post-flow hooks. Use this as a reference when building your own plugin.
+An example [fledge](https://github.com/CorvidLabs/fledge) plugin demonstrating deploy, rollback, and post-lane hooks. Use this as a reference when building your own plugin.
 
 ## Install
 
@@ -41,15 +41,15 @@ fledge rollback --env production --yes
 
 ## Hooks
 
-### `flow:post`
+### `lane:post`
 
-Runs automatically after every fledge flow completes. Prints a status line:
+Runs automatically after every fledge lane completes. Prints a status line:
 
 ```
-  [fledge-deploy] flow:post — ✓ build [success] (run: abc123)
+  [fledge-deploy] lane:post — ✓ build [success] (run: abc123)
 ```
 
-fledge injects `FLEDGE_FLOW_NAME`, `FLEDGE_FLOW_STATUS`, and `FLEDGE_FLOW_RUN_ID` into the hook's environment.
+fledge injects `FLEDGE_LANE_NAME`, `FLEDGE_LANE_STATUS`, and `FLEDGE_LANE_RUN_ID` into the hook's environment.
 
 ## Plugin structure
 
@@ -60,7 +60,7 @@ fledge-deploy/
 │   ├── fledge-deploy    ← executable for `fledge deploy`
 │   └── fledge-rollback  ← executable for `fledge rollback`
 └── hooks/
-    └── flow-post        ← runs on flow:post event
+    └── lane-post        ← runs on lane:post event
 ```
 
 ### `plugin.toml` reference
@@ -81,8 +81,8 @@ name   = "rollback"
 binary = "bin/fledge-rollback"
 
 [[hooks]]
-event  = "flow:post"
-binary = "hooks/flow-post"
+event  = "lane:post"
+binary = "hooks/lane-post"
 ```
 
 ## Building your own plugin
