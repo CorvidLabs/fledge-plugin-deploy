@@ -6,12 +6,13 @@ author = "CorvidLabs"
 
 [[commands]]
 name = "deploy"
+description = "Deploy current project"
 binary = "bin/fledge-deploy"
 
 [[commands]]
 name = "rollback"
+description = "Rollback to previous deployment"
 binary = "bin/fledge-rollback"
 
-[[hooks]]
-event = "flow:post"
-binary = "hooks/flow-post"
+[hooks]
+post_install = "echo 'fledge-deploy installed successfully'"
