@@ -1,14 +1,14 @@
-# fledge-deploy
+# fledge-plugin-deploy
 
 An example [fledge](https://github.com/CorvidLabs/fledge) plugin demonstrating deploy, rollback, and post-lane hooks. Use this as a reference when building your own plugin.
 
 ## Install
 
 ```sh
-fledge plugin install CorvidLabs/fledge-deploy
+fledge plugin install CorvidLabs/fledge-plugin-deploy
 ```
 
-This clones the repo into `~/.config/fledge/plugins/fledge-deploy/` and registers the commands and hooks from `plugin.toml`.
+This clones the repo into `~/.config/fledge/plugins/fledge-plugin-deploy/` and registers the commands and hooks from `plugin.toml`.
 
 ## Commands
 
@@ -54,7 +54,7 @@ fledge injects `FLEDGE_LANE_NAME`, `FLEDGE_LANE_STATUS`, and `FLEDGE_LANE_RUN_ID
 ## Plugin structure
 
 ```
-fledge-deploy/
+fledge-plugin-deploy/
 ├── plugin.toml          ← manifest: name, version, commands, hooks
 ├── bin/
 │   ├── fledge-deploy    ← executable for `fledge deploy`
@@ -67,7 +67,7 @@ fledge-deploy/
 
 ```toml
 [plugin]
-name        = "fledge-deploy"
+name        = "fledge-plugin-deploy"
 version     = "0.1.0"
 description = "..."
 author      = "CorvidLabs"

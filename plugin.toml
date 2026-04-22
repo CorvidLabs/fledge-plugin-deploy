@@ -1,5 +1,5 @@
 [plugin]
-name = "fledge-deploy"
+name = "fledge-plugin-deploy"
 version = "0.1.0"
 description = "Deploy, rollback, and post-lane notification for fledge workflows"
 author = "CorvidLabs"
@@ -15,4 +15,4 @@ description = "Rollback to previous deployment"
 binary = "bin/fledge-rollback"
 
 [hooks]
-post_install = "echo 'fledge-deploy installed successfully'"
+post_install = "echo 'fledge-plugin-deploy installed successfully'"
