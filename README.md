@@ -1,6 +1,8 @@
 # fledge-plugin-deploy
 
-An example [fledge](https://github.com/CorvidLabs/fledge) plugin demonstrating deploy, rollback, and post-lane hooks. Use this as a reference when building your own plugin.
+**The reference implementation for fledge lane hooks and deploy workflows.**
+
+This plugin demonstrates the canonical patterns for building deploy/rollback commands and lane lifecycle hooks using the fledge plugin protocol. Use it as the starting point when building your own plugin that needs to integrate with lanes or manage deployments.
 
 ## Install
 
@@ -84,6 +86,22 @@ binary = "bin/fledge-rollback"
 event  = "lane:post"
 binary = "hooks/lane-post"
 ```
+
+## Lane hooks reference
+
+This plugin is the canonical example for lane lifecycle hooks. The `hooks/lane-post` script shows how to:
+
+- Read fledge-injected environment variables (`FLEDGE_LANE_NAME`, `FLEDGE_LANE_STATUS`, `FLEDGE_LANE_RUN_ID`)
+- Report status based on lane outcomes
+- Exit non-zero on lane failure so fledge surfaces hook errors
+
+Any plugin can register hooks for `lane:pre` or `lane:post` events in its `plugin.toml`. Hooks run automatically as part of the lane lifecycle and receive context through environment variables.
+
+## CI
+
+This repo uses GitHub Actions for continuous integration:
+
+- **ShellCheck** lints all scripts in `bin/` and `hooks/` on every push to `main` and on pull requests.
 
 ## Building your own plugin
 

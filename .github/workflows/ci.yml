@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  shellcheck:
+    name: ShellCheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ShellCheck
+        run: sudo apt-get install -y shellcheck
+
+      - name: Lint shell scripts
+        run: |
+          shopt -s globstar nullglob
+          files=(bin/* hooks/*)
+          if [[ ${#files[@]} -gt 0 ]]; then
+            shellcheck "${files[@]}"
+          else
+            echo "No shell scripts found"
+          fi
