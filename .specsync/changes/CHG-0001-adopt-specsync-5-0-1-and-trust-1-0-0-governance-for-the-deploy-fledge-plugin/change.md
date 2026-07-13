@@ -1,6 +1,6 @@
 ---
 id: CHG-0001-adopt-specsync-5-0-1-and-trust-1-0-0-governance-for-the-deploy-fledge-plugin
-state: implementing
+state: accepted
 type: migration
 base_commit: b441d6b73365e0557369fe725c30e2c38ce086c4
 ---
