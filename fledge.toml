@@ -1,0 +1,10 @@
+# fledge.toml: project task definitions
+[tasks]
+lint = "shellcheck bin/* hooks/*"
+deploy-dry-run = "bin/fledge-deploy --dry-run"
+rollback-simulated = "bin/fledge-rollback --yes"
+hook-success = "FLEDGE_LANE_NAME=verify FLEDGE_LANE_STATUS=success FLEDGE_LANE_RUN_ID=trust-migration hooks/lane-post"
+
+[lanes.verify]
+description = "Lint and safely smoke-test deploy, rollback, and post-lane hook behavior"
+steps = ["lint", "deploy-dry-run", "rollback-simulated", "hook-success"]

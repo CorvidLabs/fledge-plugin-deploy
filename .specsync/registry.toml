@@ -1,0 +1,5 @@
+[registry]
+name = "fledge-plugin-deploy-trust-wave3"
+
+[specs]
+deploy = "specs/deploy/deploy.spec.md"
