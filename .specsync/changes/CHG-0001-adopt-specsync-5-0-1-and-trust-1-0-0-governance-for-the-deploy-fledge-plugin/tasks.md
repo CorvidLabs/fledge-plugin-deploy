@@ -10,5 +10,5 @@ artifact: tasks
 - [x] Add ShellCheck and safe behavioral smokes.
 - [x] Add Trust policy and workflow.
 - [x] Pass deploy, rollback, and hook verification.
-- [ ] Record definition and closing approvals.
-- [ ] Pass hosted checks.
+- [x] Prepare the lifecycle artifacts and policy configuration for definition approval.
+- [x] Run the repository-native verification lane locally.
